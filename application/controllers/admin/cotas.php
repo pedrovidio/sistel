@@ -23,16 +23,14 @@ class Cotas extends CI_Controller {
     }
 
     public function add(){
-      $ufTipo = $this->cotas->findUfTipo();
+      $cotas = $this->cotas->all();
+      foreach($cotas as $cota){
+        $filters = explode('-', $cota['cotas']);
 
-      foreach($ufTipo as $cota){
-        $cotaExists = $this->cotas->findOneUfTipo($cota);
+        $tipo_publico = $filters[0];
+        $uf = $filters[1];
 
-        if(!$cotaExists){
-          $add['cotas'] = $cota;
-          $idCota = $this->cotas->add($add);
-          $this->respondentes->ApplyIdCota($idCota,$cota);
-        }
+        $this->respondentes->ApplyIdCota($cota['id'], $tipo_publico, $uf);
       }
 
       redirect(base_url('cotas'));
@@ -44,7 +42,7 @@ class Cotas extends CI_Controller {
 
       $data = $this->cotas->findById($this->uri->segment(4));
 
-      $this->cotas->updateCotaRespondentes($data['cotas'], $cotas['status'] );
+      $this->cotas->updateCotaRespondentes($data['id'], $cotas['status'] );
 
       redirect(base_url('cotas'));
     }

@@ -63,6 +63,7 @@
         Hora: <input type="time" name="hora" id="hora" onchange="condition3()">
       </div>
     <input type="hidden" name="id" value="<?php echo $contact['id']; ?>">
+    <input type="hidden" name="cotas_id" value="<?php echo $contact['cotas_id']; ?>">
     <input id="quest-hidden-submit" class="quest-hidden-submit" type="submit" class="btsuccess" value="Avançar">
     </form>
   </div>

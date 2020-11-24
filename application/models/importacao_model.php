@@ -9,8 +9,8 @@ class Importacao_model extends CI_Model {
 	}
 
 	public function cadastro($data) {
-        $retorno = $this->db->insert_batch('respondentes', $data);
-        return $retorno;
+		$retorno = $this->db->insert_batch('respondentes', $data);
+		return $retorno;
 	}
 
 	public function update($data) {

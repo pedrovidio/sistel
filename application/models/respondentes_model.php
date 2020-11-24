@@ -31,9 +31,10 @@ class Respondentes_model extends CI_Model {
 	/** {login} {admin home} {admin lists} */
 	public function findAvailables() {
 		// die('disponivel');
-		$this->db->where('Status','1');
-		// $this->db->where('statusLigacao',null);
-		$this->db->where('statusCota',true);
+		$this->db->join('cotas', 'respondentes.cotas_id = cotas.id');
+		$this->db->where('respondentes.Status','1');
+		$this->db->where('respondentes.statusLigacao',null);
+		$this->db->where('cotas.status',true);
     return $this->db->get($this->table)->result_array();
 	}
 
@@ -65,21 +66,91 @@ class Respondentes_model extends CI_Model {
 	/** {oper painel} */
 	public function findAvailablesOper($oper) {
 		// die('disponivel oper');
-		$this->db->where('operador',$oper);
-		$this->db->where('Status','1');
-		// $this->db->where('statusLigacao',null);
-		$this->db->where('statusCota',true);
-		$this->db->order_by('id', 'RANDOM');
-		$this->db->limit( 25, 0 );
-    return $this->db->get($this->table)->result_array();
+		$this->db->select('
+		respondentes.id,
+		respondentes.nome,
+		respondentes.tipo_publico,
+		respondentes.uf,
+		respondentes.plano_beneficio,
+		respondentes.patrocinadora,
+		respondentes.ddd_celular,
+		respondentes.telefone_celular,
+		respondentes.ddd_fixo,
+		respondentes.telefone_fixo,
+		respondentes.sexo,
+		respondentes.plano_assistencial,
+		respondentes.tem_emprestimo,
+		respondentes.dt_nascimento,
+		respondentes.acesso_app_fale_conosco,
+		respondentes.acesso_fale_conosco,
+		respondentes.acesso_app_area_restrita,
+		respondentes.acesso_area_restrita,
+		respondentes.ouvidoria,
+		respondentes.status,
+		respondentes.statusLigacao,
+		respondentes.dia,
+		respondentes.hora,
+		respondentes.operador,
+		respondentes.logs_id,
+		respondentes.cotas_id,
+		respondentes.statusCota,
+		cotas.id as cotas_id,
+		cotas.cotas,
+		cotas.meta,
+		cotas.qtd
+		');
+		$this->db->join('cotas', 'respondentes.cotas_id = cotas.id');
+		$this->db->where('cotas.status',true);
+		$this->db->where('respondentes.operador',$oper);
+		$this->db->where('respondentes.Status','1');
+		$this->db->where('respondentes.statusLigacao',null);
+		$this->db->order_by('respondentes.id', 'RANDOM');
+		$this->db->limit( 1, 0 );
+		$row = $this->db->get($this->table)->result_array();
+
+		return $row[0];
 	}
 
 	/** {oper painel} */
 	public function findScheduledOper($oper) {
 		// die('agendados oper');
-		$this->db->where('operador',$oper);
-		$this->db->where('statusLigacao','Agendado com dia e hora certo');
-		$this->db->where('statusCota',true);
+		$this->db->select('
+		respondentes.id,
+		respondentes.nome,
+		respondentes.tipo_publico,
+		respondentes.uf,
+		respondentes.plano_beneficio,
+		respondentes.patrocinadora,
+		respondentes.ddd_celular,
+		respondentes.telefone_celular,
+		respondentes.ddd_fixo,
+		respondentes.telefone_fixo,
+		respondentes.sexo,
+		respondentes.plano_assistencial,
+		respondentes.tem_emprestimo,
+		respondentes.dt_nascimento,
+		respondentes.acesso_app_fale_conosco,
+		respondentes.acesso_fale_conosco,
+		respondentes.acesso_app_area_restrita,
+		respondentes.acesso_area_restrita,
+		respondentes.ouvidoria,
+		respondentes.status,
+		respondentes.statusLigacao,
+		respondentes.dia,
+		respondentes.hora,
+		respondentes.operador,
+		respondentes.logs_id,
+		respondentes.cotas_id,
+		respondentes.statusCota,
+		cotas.id as cotas_id,
+		cotas.cotas,
+		cotas.meta,
+		cotas.qtd
+		');
+		$this->db->join('cotas', 'respondentes.cotas_id = cotas.id');
+		$this->db->where('cotas.status',true);
+		$this->db->where('respondentes.operador',$oper);
+		$this->db->where('respondentes.statusLigacao','Agendado com dia e hora certo');
 		$this->db->order_by('dia', 'asc');
 		$this->db->limit( 25, 0 );
     return $this->db->get($this->table)->result_array();
@@ -88,9 +159,43 @@ class Respondentes_model extends CI_Model {
 	/** {oper painel} */
 	public function findUnfinished($oper) {
 		// die('andamento');
-		$this->db->where('operador',$oper);
-		$this->db->where('statusLigacao', 'Entrevista em andamento');
-		$this->db->where('statusCota',true);
+		$this->db->select('
+		respondentes.id,
+		respondentes.nome,
+		respondentes.tipo_publico,
+		respondentes.uf,
+		respondentes.plano_beneficio,
+		respondentes.patrocinadora,
+		respondentes.ddd_celular,
+		respondentes.telefone_celular,
+		respondentes.ddd_fixo,
+		respondentes.telefone_fixo,
+		respondentes.sexo,
+		respondentes.plano_assistencial,
+		respondentes.tem_emprestimo,
+		respondentes.dt_nascimento,
+		respondentes.acesso_app_fale_conosco,
+		respondentes.acesso_fale_conosco,
+		respondentes.acesso_app_area_restrita,
+		respondentes.acesso_area_restrita,
+		respondentes.ouvidoria,
+		respondentes.status,
+		respondentes.statusLigacao,
+		respondentes.dia,
+		respondentes.hora,
+		respondentes.operador,
+		respondentes.logs_id,
+		respondentes.cotas_id,
+		respondentes.statusCota,
+		cotas.id as cotas_id,
+		cotas.cotas,
+		cotas.meta,
+		cotas.qtd
+		');
+		$this->db->join('cotas', 'respondentes.cotas_id = cotas.id');
+		$this->db->where('cotas.status',true);
+		$this->db->where('respondentes.operador',$oper);
+		$this->db->where('respondentes.statusLigacao', 'Entrevista em andamento');
 		$this->db->limit( 25, 0 );
     return $this->db->get($this->table)->result_array();
 	}
@@ -152,10 +257,9 @@ class Respondentes_model extends CI_Model {
 	}
 
 	/** COTA */
-	public function ApplyIdCota($idCota,$cota){
-		$divideCota = explode("-",$cota);
-		$this->db->where('tipo_publico',$divideCota[0]);
-		$this->db->where('uf',$divideCota[1]);
-		return $this->db->update($this->table, array('cotas_id' => $idCota));
+	public function ApplyIdCota($cotas_id,$tipo_publico, $uf){
+		$this->db->where('tipo_publico',$tipo_publico);
+		$this->db->where('uf',$uf);
+		return $this->db->update($this->table, array('cotas_id' => $cotas_id));
 	}
 }

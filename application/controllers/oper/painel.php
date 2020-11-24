@@ -18,23 +18,21 @@ class Painel extends CI_Controller {
     }
 
     public function index() {
-      $send['oper'] = $this->session->userdata('usuario');
+      $menu['oper'] = $this->session->userdata('usuario');
 
       $dados = array(
         'list_painel_oper'  => 'Disponivel'
       );
       $this->session->set_userdata($dados);
 
-      $headers['headers'] = ['list','bootstrap.min', 'menu'];
+      $headers['headers'] = ['bootstrap.min', 'style', 'form', 'home', 'menu', 'login'];
       $headers['js'] = 0;
       $this->load->view('slices/header', $headers);
-      $this->load->view('painel/components/menu', $send);
+      $this->load->view('painel/components/menu', $menu);
 
-      $contacts = $this->respondentes->findAvailablesOper($this->session->userdata('usuario'));
+      $send['contact'] = $this->respondentes->findAvailablesOper($this->session->userdata('usuario'));
 
-      $send['contacts'] = $contacts;
-
-      $this->load->view('painel/lists/index.php',$send);
+      $this->load->view('painel/approach/index.php',$send);
       
       $this->load->view('slices/footer');
     }

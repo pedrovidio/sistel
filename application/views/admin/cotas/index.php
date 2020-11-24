@@ -7,7 +7,13 @@
               <input style="width:300px" class="column_filter form-control" id="col0_filter" type="text" placeholder="Cotas" disabled><span style="display:none">Cotas</span>
             </th>
             <th id="filter_col1" data-column="1">
-              <input style="width:100px" class="column_filter form-control" id="col1_filter" type="text" placeholder="Status" disabled><span style="display:none">Status</span>
+              <input style="width:50px" class="column_filter form-control" id="col1_filter" type="text" placeholder="Cotas" disabled><span style="display:none">Cotas</span>
+            </th>
+            <th id="filter_col2" data-column="2">
+              <input style="width:80px" class="column_filter form-control" id="col2_filter" type="text" placeholder="Realizadas" disabled><span style="display:none">Realizadas</span>
+            </th>
+            <th id="filter_col3" data-column="3">
+              <input style="width:80px" class="column_filter form-control" id="col3_filter" type="text" placeholder="Status" disabled><span style="display:none">Status</span>
             </th>
           </tr>
       </thead>
@@ -19,6 +25,8 @@
             echo "
             <tr>
               <td>".$val['cotas']."</td>
+              <td>".$val['meta']."</td>
+              <td>".$val['qtd']."</td>
               <td><div class='".$status."'><a href='".base_url('admin/cotas/update/'.$val['id'])."/$status'>$status</a></div></td>
             </tr>
             ";

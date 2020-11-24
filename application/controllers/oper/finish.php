@@ -11,6 +11,7 @@ class Finish extends CI_Controller {
       }
 
       $this->load->model('Respondentes_model','respondentes');
+      $this->load->model('Cotas_model','cotas');
       $this->load->model('Log_model','logs');
     }
 
@@ -44,10 +45,23 @@ class Finish extends CI_Controller {
 
       $respondenteBd = $this->respondentes->findById($this->uri->segment(4));
 
+      if($this->uri->segment(5) !== 'Finalizado'){
+        $cota = $this->cotas->countCota($respondenteBd['cotas_id']);
+        $cota['qtd']--;
+
+        if($cota['qtd'] >= $cota['meta']){
+          $cota['status'] = false;
+        }else{
+          $cota['status'] = true;
+        }
+
+        $this->cotas->update($respondenteBd['cotas_id'], $cota);
+      }
+
       $this->logs->update($log, $respondenteBd['logs_id']);
         
       $this->respondentes->update_unique($respondente, $this->uri->segment(4));
 
-      // redirect(base_url('painel'));
+      redirect(base_url('painel'));
     }
   }

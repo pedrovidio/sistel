@@ -15,6 +15,7 @@ class Approach extends CI_Controller {
         redirect(base_url());
       }
       $this->load->model('Respondentes_model','respondentes');
+      $this->load->model('Cotas_model','cotas');
       $this->load->model('Log_model','logs');
     }
 
@@ -34,23 +35,30 @@ class Approach extends CI_Controller {
     public function getForm(){
       $log['list'] = $this->session->userdata('list_painel_oper');
       $log['motivo'] = $this->input->post('motivo');
+
       if ($this->input->post('dia') != ''){
         $log['dia'] = $this->input->post('dia');
         $respondente['dia'] = $this->input->post('dia');
       }
+
       $respondente['hora'] = $this->input->post('hora');
       $respondente['operador'] = $this->session->userdata('usuario');
+
       $log['hora'] = $this->input->post('hora');
       $log['respondentes_id'] = $this->input->post('id');
       $log['opers_id'] = $this->session->userdata('id');
 
       if($this->input->post('filtro1') === 'sim'){
         $log['statusLigacao'] = "Entrevista em andamento";
-        $respondente['statusLigacao'] = "Entrevista em andamento";
         
+        $respondente['statusLigacao'] = "Entrevista em andamento";
         $respondente['logs_id'] = $this->logs->add($log);
         
         $this->respondentes->update_unique($respondente, $this->input->post('id'));
+
+        $cota = $this->cotas->countCota($this->input->post('cotas_id'));
+        $cota['qtd']++;
+        $this->cotas->update($this->input->post('cotas_id'), $cota);
         
         $respondente = $this->respondentes->findById($this->input->post('id'));
         $complement = '';

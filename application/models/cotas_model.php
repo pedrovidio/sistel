@@ -12,17 +12,6 @@ class Cotas_model extends CI_Model {
     return $this->db->get($this->table)->result_array();
 	}
 
-	public function findUfTipo() {
-		$this->db->distinct();
-		$this->db->select('uf,tipo_publico');
-		$rows = $this->db->get('respondentes')->result();
-		
-		foreach($rows as $key => $cota){
-			$cotas[] = $cota->tipo_publico.'-'.$cota->uf;
-		}
-		return $cotas;
-	}
-
 	public function findById($id) {
 		$this->db->where('id', $id);
 		$data = $this->db->get($this->table)->result_array();
@@ -35,14 +24,22 @@ class Cotas_model extends CI_Model {
 		return $this->db->get($this->table)->result();
 	}
 
+	public function countCota($id){
+		$this->db->select('meta, qtd');
+		$this->db->where('id', $id);
+		$row = $this->db->get($this->table)->result_array();
+
+		return $row[0];
+	}
+
 	public function add($data){
 		$this->db->insert($this->table, $data);
     return $this->db->insert_id();
 	}
 
-	public function updateCotaRespondentes($ufTipo, $statusCota){
+	public function updateCotaRespondentes($cotas_id, $statusCota){
 		$respondentes['statusCota'] = $statusCota;
-		$this->db->where('ufTipo',$ufTipo);
+		$this->db->where('cotas_id',$cotas_id);
 		return $this->db->update('respondentes', $respondentes);
 	}
 
